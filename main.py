@@ -16,36 +16,35 @@
 #
 import webapp2
 import cgi
-
-def build_page(page_content):
-
+username=""
+e_mail=""
+def build_page(username,e_mail):
     headline="<h1>User Signup</h1>"
     table="""<table>
                 <tbody>
-            <tr><td><label>Username</label></td><td><input name=username type=text value=username></td></tr>
-            <tr><td><label>Password</label></td><td><input name=password type=text></td></tr>
-            <tr><td><label>Confirm Password</label></td><td><input name=confirm_password type=text></td></tr>
-            <tr><td><label>E-mail(optional)</label></td><td><input name=e_mail type=text value=e_mail></td></tr>
+            <tr><td><label>Username</label></td><td><input name=username type=text value=%s></td></tr>
+            <tr><td><label>Password</label></td><td><input name=password type=password></td></tr>
+            <tr><td><label>Confirm Password</label></td><td><input name=confirm_password type=password></td></tr>
+            <tr><td><label>E-mail(optional)</label></td><td><input name=e_mail type=text value=%s></td></tr>
                 </tbody>
             </table>
-
-
-
-            """
+            """%(username,e_mail)
     submit="<input type= 'submit'/>"
     form="<form method=post>"+headline+table+submit+"</form>"
     return form
+
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        content=build_page("")
+        content=build_page("","")
         self.response.write(content)
 
     def post(self):
-        username=self.request.get("username")
+        username=cgi.escape(self.request.get("username"))
         password=self.request.get("password")
         confirm_password=self.request.get("confirm_password")
-        e_mail=self.request.get("e_mail")
-        content=build_page("")
+        e_mail=cgi.escape(self.request.get("e_mail"))
+        content=build_page(username,e_mail)
         self.response.write(content)
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
