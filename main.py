@@ -15,11 +15,38 @@
 # limitations under the License.
 #
 import webapp2
+import cgi
 
+def build_page(page_content):
+
+    headline="<h1>User Signup</h1>"
+    table="""<table>
+                <tbody>
+            <tr><td><label>Username</label></td><td><input name=username type=text value=username></td></tr>
+            <tr><td><label>Password</label></td><td><input name=password type=text></td></tr>
+            <tr><td><label>Confirm Password</label></td><td><input name=confirm_password type=text></td></tr>
+            <tr><td><label>E-mail(optional)</label></td><td><input name=e_mail type=text value=e_mail></td></tr>
+                </tbody>
+            </table>
+
+
+
+            """
+    submit="<input type= 'submit'/>"
+    form="<form method=post>"+headline+table+submit+"</form>"
+    return form
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        content=build_page("")
+        self.response.write(content)
 
+    def post(self):
+        username=self.request.get("username")
+        password=self.request.get("password")
+        confirm_password=self.request.get("confirm_password")
+        e_mail=self.request.get("e_mail")
+        content=build_page("")
+        self.response.write(content)
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
