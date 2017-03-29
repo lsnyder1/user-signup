@@ -81,7 +81,21 @@ def build_page(username,uner,pwer,pmater,email,emer):
     return form
 
 def build_success_page(username):
-    head="<h1>Welcome %s</h1>"%(username)
+    head="""<!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>
+                            Welcome
+                        </title>
+                        <style>
+                        body {background-color: powderblue;}
+                        h1   {color: blue;}
+                        </style>
+                    </head>
+                    <body>
+                    <h1>Welcome %s</h1>
+                    </body>
+                    """%(username)
     return head
 
 class MainHandler(webapp2.RequestHandler):
