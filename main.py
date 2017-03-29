@@ -16,19 +16,45 @@
 #
 import webapp2
 import cgi
+import re
+password=""
+confirm_password=""
 username=""
+uner=""
+pwer=""
 e_mail=""
-def build_page(username,e_mail):
+emer=""
+
+def isusernamevalid(username):
+    USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+    return USER_RE.match(username)
+
+def ispwordvalid(password,confirm_password):
+    USER_RE = re.compile(r"^.{3,20}$")
+    if password==confirm_password and USER_RE.match(password):
+        return True
+    else:
+        return False
+
+def isemailvalid(e_mail):
+    USER_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
+    if USER_RE.match(e_mail) or e_mail=="":
+        return True
+    else:
+        return False
+
+
+def build_page(username,uner,pwer,e_mail,emer):
     headline="<h1>User Signup</h1>"
     table="""<table>
                 <tbody>
-            <tr><td><label>Username</label></td><td><input name=username type=text value=%s></td></tr>
+            <tr><td><label>Username</label></td><td><input name=username type=text value=%s>%s</td></tr>
             <tr><td><label>Password</label></td><td><input name=password type=password></td></tr>
-            <tr><td><label>Confirm Password</label></td><td><input name=confirm_password type=password></td></tr>
-            <tr><td><label>E-mail(optional)</label></td><td><input name=e_mail type=text value=%s></td></tr>
+            <tr><td><label>Confirm Password</label></td><td><input name=confirm_password type=password>%s</td></tr>
+            <tr><td><label>E-mail(optional)</label></td><td><input name=e_mail type=text value=%s>%s</td></tr>
                 </tbody>
             </table>
-            """%(username,e_mail)
+            """%(username,uner,pwer,e_mail,emer)
     submit="<input type= 'submit'/>"
     form="<form method=post>"+headline+table+submit+"</form>"
     return form
@@ -36,7 +62,7 @@ def build_page(username,e_mail):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        content=build_page("","")
+        content=build_page("","","","","")
         self.response.write(content)
 
     def post(self):
@@ -44,8 +70,30 @@ class MainHandler(webapp2.RequestHandler):
         password=self.request.get("password")
         confirm_password=self.request.get("confirm_password")
         e_mail=cgi.escape(self.request.get("e_mail"))
-        content=build_page(username,e_mail)
-        self.response.write(content)
+        if isusernamevalid(username) and ispwordvalid(password,confirm_password) and isemailvalid(e_mail):
+            self.redirect("/Welcome?username="+username)
+        else:
+            if isusernamevalid(username):
+                uner=""
+            else:
+                uner="Your username is invalid."
+            if ispwordvalid(password,confirm_password):
+                pwer=""
+            else:
+                pwer="Your passwords don't match."
+            if isemailvalid(e_mail):
+                emer=""
+            else:
+                emer="Your email address appears to be invalid."
+            content=build_page(username,uner,pwer,e_mail,emer)
+            self.response.write(content)
+
+class SuccessPage(webapp2.RequestHandler):
+    def get(self):
+        head="<h1>Welcome"+username+"</h1>"
+        self.response.write(head)
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/Welcome',SuccessPage)
 ], debug=True)
