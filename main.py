@@ -61,10 +61,10 @@ def build_page(username,uner,pwer,pmater,email,emer):
     headline="<h1>User Signup</h1>"
     table="""<table>
                 <tbody>
-            <tr><td><label>Username</label></td><td><input name=username type=text value=%s></td>%s</tr>
+            <tr><td><label>Username</label></td><td><input name=username type=text value="%s"></td>%s</tr>
             <tr><td><label>Password</label></td><td><input name=password type=password></td>%s</tr>
             <tr><td><label>Confirm Password</label></td><td><input name=verify type=password></td>%s</tr>
-            <tr><td><label>E-mail(optional)</label></td><td><input name=email type=text value=%s></td>%s</tr>
+            <tr><td><label>E-mail(optional)</label></td><td><input name=email type=text value="%s"></td>%s</tr>
                 </tbody>
             </table>
             </body>
