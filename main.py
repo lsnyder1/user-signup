@@ -17,14 +17,7 @@
 import webapp2
 import cgi
 import re
-password=""
-verify=""
-username=""
-uner=""
-pwer=""
-pmater=""
-email=""
-emer=""
+
 
 def isusernamevalid(username):
     USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
@@ -104,6 +97,10 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(content)
 
     def post(self):
+        uner=""
+        pwer=""
+        pmater=""
+        emer=""
         username=cgi.escape(self.request.get("username"))
         password=self.request.get("password")
         verify=self.request.get("verify")
